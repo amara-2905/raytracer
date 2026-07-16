@@ -1,7 +1,7 @@
 # Raytracer 
 ![final render](output.png)
 <br>
-This image was created at 1200x675 at 500 samples per pixel. It took 17 minutes 45 seconds to run on my machine on a release build.
+This image was created at 1200x675 at 500 samples per pixel. It took 14 minutes 39 seconds to run on my machine on a release build.
 
 ```bash
 cargo build --release
