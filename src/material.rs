@@ -14,7 +14,7 @@ impl Material for EmptyMaterial {
     }
 }
 pub trait Material: Send + Sync {
-    fn scatter(&self,r_in: &Ray,rec: &HitRecord,attenuation: &mut Vec3,scattered: &mut Ray) -> bool {
+    fn scatter(&self,_r_in: &Ray,_rec: &HitRecord,_attenuation: &mut Vec3,_scattered: &mut Ray) -> bool {
         false
     }
 }
@@ -44,7 +44,7 @@ impl Metal {
 }
 
 impl Material for Lambertian{
-    fn scatter(&self,r_in: &Ray,rec: &HitRecord,attenuation: &mut Vec3, scattered: &mut Ray) -> bool {
+    fn scatter(&self,_r_in: &Ray,rec: &HitRecord,attenuation: &mut Vec3, scattered: &mut Ray) -> bool {
         let mut scatter_direction = Vec3::add(rec.normal,Vec3::random_unit_vector());
 
         if scatter_direction.near_zero(){
@@ -93,7 +93,7 @@ impl Material for Dielectric{
         let cos_theta = Vec3::dot_product(unit_direction.scalar_mul(-1.0), rec.normal).min(1.0);
         let sin_theta = (1.0 - cos_theta * cos_theta).sqrt();
         let cannot_refract  = ri * sin_theta > 1.0;
-        let mut direction = Vec3::new(0.0, 0.0, 0.0);
+        let direction: Vec3;
         if cannot_refract || (Dielectric::reflectance(cos_theta, ri) > random_double()){
             direction = Vec3::reflect(unit_direction, rec.normal);
         }else{

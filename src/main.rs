@@ -10,7 +10,7 @@ mod material;
 
 use std::{f64::consts::PI, sync::Arc};
 use rand::Rng;
-use crate::{camera::Camera, hittable_list::HittableList, material::{Dielectric, EmptyMaterial, Lambertian, Metal}, sphere::Sphere, vec3::Vec3};
+use crate::{camera::Camera, hittable_list::HittableList, material::{Dielectric, Lambertian, Metal}, sphere::Sphere, vec3::Vec3};
 
 fn degrees_to_radians (degrees : f64) -> f64 {
     (degrees * PI) / 180.0
@@ -39,7 +39,7 @@ fn main(){
             let center = Vec3::new(a as f64 + 0.9 * random_double(),0.2,b as f64 + 0.9 * random_double());
 
             if Vec3::sub(center, Vec3::new(4.0,0.2,0.0)).length() > 0.9 {
-                let mut sphere_material: Arc<dyn material::Material> = Arc::new(EmptyMaterial);
+                let sphere_material: Arc<dyn material::Material>;
 
                 if choose_mat < 0.8 {
                     let albedo = Vec3::mul(Vec3::random_vector1(), Vec3::random_vector1());
