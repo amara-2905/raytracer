@@ -1,6 +1,7 @@
 use std::{f64::INFINITY};
 use rayon::prelude::*;
 use crate::{color::write_color, degrees_to_radians, hittable::{HitRecord, Hittable}, interval::Interval, random_double, ray::Ray, vec3::Vec3};
+use std::io::{self, Write, BufWriter};
 
 pub struct Camera{
     pub aspect_ratio: f64,
@@ -136,8 +137,11 @@ impl Camera{
 
     pub fn render<T: Hittable + Sync>(&mut self, world: &T){
         self.initialize();
+        let stdout = io::stdout();
+        let mut out = BufWriter::new(stdout.lock());
 
-        println!("P3\n{} {} \n255\n",self.image_width,self.image_height);
+        writeln!(out, "P3\n{} {}\n255", self.image_width, self.image_height).unwrap();
+        // println!("P3\n{} {} \n255\n",self.image_width,self.image_height);
         let image_pixels: Vec<Vec<Vec3>> = (0..self.image_height)
             .into_par_iter()
             .map(|j| {
@@ -156,8 +160,9 @@ impl Camera{
         
         for row in image_pixels {
             for pixel_color in row {
-                write_color(pixel_color);
+                write_color(&mut out, pixel_color);
             }
         }
+        out.flush().unwrap();
     }
 }
